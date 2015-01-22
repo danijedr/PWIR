@@ -3,8 +3,11 @@
 -compile(export_all).
 
 handle(Socket) ->
-    case gen_tcp:recv(Socket,0) of
+    Received = gen_tcp:recv(Socket,0),
+    case Received of
       {ok,Data} ->
+        A = erlang:binary_to_list(Data),
+        erlang:display(A),
         gen_tcp:send(Socket,Data),
         handle(Socket);
       {error,closed} ->
